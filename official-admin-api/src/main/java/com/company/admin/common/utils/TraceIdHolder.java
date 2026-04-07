@@ -1,0 +1,20 @@
+package com.company.admin.common.utils;
+
+public final class TraceIdHolder {
+    private static final ThreadLocal<String> HOLDER = new ThreadLocal<>();
+
+    private TraceIdHolder() {
+    }
+
+    public static String get() {
+        return HOLDER.get();
+    }
+
+    public static void set(String traceId) {
+        HOLDER.set(traceId);
+    }
+
+    public static void clear() {
+        HOLDER.remove();
+    }
+}

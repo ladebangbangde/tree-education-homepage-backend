@@ -24,6 +24,15 @@ public class SiteConfigEntity extends BaseEntity {
     @Column(name = "logo_url")
     private String logoUrl;
 
+    @Column(name = "favicon_url")
+    private String faviconUrl;
+
+    @Column(name = "support_email")
+    private String supportEmail;
+
+    @Column(name = "support_phone")
+    private String supportPhone;
+
     @Column(nullable = false)
     private String status;
 }

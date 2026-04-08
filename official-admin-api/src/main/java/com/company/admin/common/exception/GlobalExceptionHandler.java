@@ -17,9 +17,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({BusinessException.class, BizException.class})
-    public ResponseEntity<ApiResponse<Void>> handleBusiness(RuntimeException e) {
-        BusinessException ex = (BusinessException) e;
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBusiness(BusinessException ex) {
         return ResponseEntity.badRequest()
             .body(ApiResponse.failure(ex.getErrorCode().getCode(), ex.getMessage(), TraceIdHolder.get()));
     }

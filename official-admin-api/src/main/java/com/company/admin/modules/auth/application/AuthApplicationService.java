@@ -55,7 +55,7 @@ public class AuthApplicationService {
         List<Long> roleIds = userRoleRepository.findByUserIdAndDeletedFlagFalse(user.getId()).stream().map(r -> r.getRoleId()).toList();
         List<Long> permissionIds = rolePermissionRepository.findByRoleIdInAndDeletedFlagFalse(roleIds).stream().map(p -> p.getPermissionId()).toList();
         List<String> permissions = permissionRepository.findByIdIn(permissionIds).stream().map(SysPermission::getPermissionCode).distinct().toList();
-        String token = jwtTokenService.generateToken(user.getId(), user.getUsername(), permissions);
+        String token = jwtTokenService.generateToken(user.getId(), user.getUsername(), user.getDisplayName(), permissions);
         saveLoginLog(request.getUsername(), httpServletRequest.getRemoteAddr(), "SUCCESS");
         return LoginResponse.builder().token(token).userId(user.getId()).username(user.getUsername())
                 .displayName(user.getDisplayName()).permissions(permissions).build();
@@ -63,7 +63,7 @@ public class AuthApplicationService {
 
     public LoginResponse me() {
         AdminUserDetails user = (AdminUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return LoginResponse.builder().userId(user.getId()).username(user.getUsername()).displayName(user.getUsername())
+        return LoginResponse.builder().userId(user.getId()).username(user.getUsername()).displayName(user.getDisplayName())
                 .permissions(user.getAuthorities().stream().map(a -> a.getAuthority()).toList()).build();
     }
 

@@ -34,12 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtTokenService.parseClaims(token);
                 Long userId = Long.parseLong(claims.getSubject());
                 String username = claims.get("username", String.class);
+                String displayName = claims.get("displayName", String.class);
                 List<String> permissions = claims.get("permissions", List.class);
                 if (permissions == null) {
                     permissions = Collections.emptyList();
                 }
                 var auth = new UsernamePasswordAuthenticationToken(
-                    new AdminUserDetails(userId, username, "N/A", true, permissions),
+                    new AdminUserDetails(userId, username, displayName == null ? username : displayName, "N/A", true, permissions),
                     null,
                     permissions.stream().map(SimpleGrantedAuthority::new).toList());
                 SecurityContextHolder.getContext().setAuthentication(auth);

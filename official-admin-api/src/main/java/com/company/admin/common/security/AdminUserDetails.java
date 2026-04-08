@@ -12,13 +12,15 @@ import java.util.List;
 public class AdminUserDetails implements UserDetails {
     private final Long id;
     private final String username;
+    private final String displayName;
     private final String password;
     private final boolean enabled;
     private final List<GrantedAuthority> authorities;
 
-    public AdminUserDetails(Long id, String username, String password, boolean enabled, List<String> permissions) {
+    public AdminUserDetails(Long id, String username, String displayName, String password, boolean enabled, List<String> permissions) {
         this.id = id;
         this.username = username;
+        this.displayName = displayName;
         this.password = password;
         this.enabled = enabled;
         this.authorities = permissions.stream().map(SimpleGrantedAuthority::new).map(a -> (GrantedAuthority) a).toList();

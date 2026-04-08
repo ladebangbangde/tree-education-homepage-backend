@@ -37,17 +37,4 @@ public final class PermissionConstants {
 
     public static final String AUDIT_LOG_VIEW = "audit:log:view";
 
-    /** @deprecated use {@link #AUTH_USER_VIEW}. */ @Deprecated public static final String USER_VIEW = AUTH_USER_VIEW;
-    /** @deprecated use {@link #AUTH_USER_CREATE}. */ @Deprecated public static final String USER_CREATE = AUTH_USER_CREATE;
-    /** @deprecated use {@link #AUTH_ROLE_VIEW}. */ @Deprecated public static final String ROLE_VIEW = AUTH_ROLE_VIEW;
-    /** @deprecated use {@link #AUTH_ROLE_CREATE}. */ @Deprecated public static final String ROLE_CREATE = AUTH_ROLE_CREATE;
-    /** @deprecated use {@link #AUTH_ROLE_GRANT}. */ @Deprecated public static final String ROLE_GRANT = AUTH_ROLE_GRANT;
-    /** @deprecated use {@link #AUTH_MENU_VIEW}. */ @Deprecated public static final String MENU_VIEW = AUTH_MENU_VIEW;
-    /** @deprecated use {@link #AUTH_PERMISSION_VIEW}. */ @Deprecated public static final String PERMISSION_VIEW = AUTH_PERMISSION_VIEW;
-    /** @deprecated use {@link #LEAD_RECORD_VIEW}. */ @Deprecated public static final String LEAD_VIEW = LEAD_RECORD_VIEW;
-    /** @deprecated use {@link #LEAD_RECORD_ASSIGN}. */ @Deprecated public static final String LEAD_ASSIGN = LEAD_RECORD_ASSIGN;
-    /** @deprecated use {@link #LEAD_RECORD_FOLLOW}. */ @Deprecated public static final String LEAD_FOLLOW = LEAD_RECORD_FOLLOW;
-    /** @deprecated use {@link #SYSTEM_CONFIG_VIEW}. */ @Deprecated public static final String CONFIG_VIEW = SYSTEM_CONFIG_VIEW;
-    /** @deprecated use {@link #SYSTEM_CONFIG_UPDATE}. */ @Deprecated public static final String CONFIG_UPDATE = SYSTEM_CONFIG_UPDATE;
-    /** @deprecated use {@link #AUDIT_LOG_VIEW}. */ @Deprecated public static final String AUDIT_VIEW = AUDIT_LOG_VIEW;
 }

@@ -18,11 +18,12 @@ public class JwtTokenService {
         this.properties = properties;
     }
 
-    public String generateToken(Long userId, String username, List<String> permissions) {
+    public String generateToken(Long userId, String username, String displayName, List<String> permissions) {
         Instant now = Instant.now();
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("username", username)
+                .claim("displayName", displayName)
                 .claim("permissions", permissions)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(properties.getExpirationSeconds())))

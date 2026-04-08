@@ -24,6 +24,9 @@ public class SysOperationLog extends BaseEntity {
     @Column(name = "request_path", nullable = false)
     private String requestPath;
 
+    @Column(name = "request_method", nullable = false)
+    private String requestMethod;
+
     @Column(name = "result_code", nullable = false)
     private String resultStatus;
 

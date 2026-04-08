@@ -34,6 +34,7 @@ public class AuditAspect {
             log.setModule(audit.module());
             log.setAction(audit.action());
             log.setRequestPath(request.getRequestURI());
+            log.setRequestMethod(request.getMethod());
             log.setResultStatus(success ? "SUCCESS" : "FAIL");
             log.setRiskTag(audit.highRisk() ? "HIGH_RISK" : "NORMAL");
             log.setRequestTime(start);

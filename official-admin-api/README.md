@@ -51,6 +51,7 @@ official-admin-api/
 ### 3) 启动
 
 ```bash
+cd official-admin-api
 mvn clean package -DskipTests
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
@@ -85,4 +86,4 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 - `GET /api/admin/leads`
 - `GET /api/admin/system/config-items`
 - `GET /api/admin/audit/operation-logs`
-
+- `GET /api/admin/site/config`

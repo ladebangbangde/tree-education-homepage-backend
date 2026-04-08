@@ -30,11 +30,21 @@ public class AuditAspect {
             throw t;
         } finally {
             SysOperationLog log = new SysOperationLog();
-            log.setOperator(SecurityContextHolder.getContext().getAuthentication() == null ? "anonymous" : SecurityContextHolder.getContext().getAuthentication().getName());
+            if (SecurityContextHolder.getContext().getAuthentication() != null
+                    && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof com.company.admin.common.security.AdminUserDetails userDetails) {
+                log.setOperatorId(userDetails.getId());
+                log.setOperator(userDetails.getDisplayName());
+            } else {
+                log.setOperatorId(null);
+                log.setOperator("anonymous");
+            }
             log.setModule(audit.module());
             log.setAction(audit.action());
             log.setRequestPath(request.getRequestURI());
             log.setRequestMethod(request.getMethod());
+            log.setIpAddress(request.getRemoteAddr());
+            log.setUserAgent(request.getHeader("User-Agent"));
+            log.setSuccessFlag(success);
             log.setResultStatus(success ? "SUCCESS" : "FAIL");
             log.setRiskTag(audit.highRisk() ? "HIGH_RISK" : "NORMAL");
             log.setRequestTime(start);

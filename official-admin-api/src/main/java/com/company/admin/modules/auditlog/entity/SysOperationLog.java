@@ -12,6 +12,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "sys_operation_log")
 public class SysOperationLog extends BaseEntity {
+    @Column(name = "operator_id")
+    private Long operatorId;
+
     @Column(name = "operator_name")
     private String operator;
 
@@ -27,12 +30,36 @@ public class SysOperationLog extends BaseEntity {
     @Column(name = "request_method", nullable = false)
     private String requestMethod;
 
+    @Column(name = "biz_type")
+    private String bizType;
+
+    @Column(name = "biz_id")
+    private Long bizId;
+
+    @Column(name = "trace_id")
+    private String traceId;
+
     @Column(name = "result_code", nullable = false)
     private String resultStatus;
+
+    @Column(name = "success_flag", nullable = false)
+    private Boolean successFlag = Boolean.TRUE;
+
+    @Column(name = "ip_address")
+    private String ipAddress;
+
+    @Column(name = "user_agent")
+    private String userAgent;
 
     @Column(name = "created_at")
     private java.time.LocalDateTime requestTime;
 
     @Column(name = "risk_tag")
     private String riskTag;
+
+    @Column(name = "before_snapshot")
+    private String beforeSnapshot;
+
+    @Column(name = "after_snapshot")
+    private String afterSnapshot;
 }

@@ -46,10 +46,13 @@ public class AuthApplicationService {
     }
 
     public LoginResponse login(LoginRequest request, HttpServletRequest httpServletRequest) {
-        SysUser user = userRepository.findByUsernameAndDeletedFlagFalse(request.getUsername())
-                .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误"));
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        SysUser user = userRepository.findByUsernameAndDeletedFlagFalse(request.getUsername()).orElse(null);
+        if (user == null) {
             saveLoginLog(null, request.getUsername(), httpServletRequest, "FAIL", "账号或密码错误");
+            throw new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误");
+        }
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            saveLoginLog(user.getId(), request.getUsername(), httpServletRequest, "FAIL", "账号或密码错误");
             throw new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误");
         }
         List<Long> roleIds = userRoleRepository.findByUserIdAndDeletedFlagFalse(user.getId()).stream().map(r -> r.getRoleId()).toList();

@@ -56,6 +56,8 @@ mvn clean package -DskipTests
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
+若企业网络对 Maven Central 有访问限制，可优先使用项目内已配置的阿里云公共仓库镜像。
+
 ## Flyway 说明
 
 - `V1__init_core_schema.sql`：一期核心表结构与约束/索引

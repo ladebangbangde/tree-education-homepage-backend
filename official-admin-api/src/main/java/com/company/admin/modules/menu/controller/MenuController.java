@@ -20,6 +20,6 @@ public class MenuController implements ApiControllerSupport {
     public MenuController(MenuApplicationService service) { this.service = service; }
 
     @GetMapping("/tree")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.MENU_VIEW + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.AUTH_MENU_VIEW + "')")
     public ApiResponse<List<MenuTreeVO>> tree() { return ok(service.tree()); }
 }

@@ -20,6 +20,6 @@ public class PermissionController implements ApiControllerSupport {
     public PermissionController(PermissionApplicationService service) { this.service = service; }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('" + PermissionConstants.PERMISSION_VIEW + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.AUTH_PERMISSION_VIEW + "')")
     public ApiResponse<List<PermissionVO>> list() { return ok(service.list()); }
 }

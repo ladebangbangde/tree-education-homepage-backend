@@ -1,23 +1,53 @@
 package com.company.admin.common.constants;
 
+/**
+ * 权限点常量，统一采用：模块:资源:动作。
+ */
 public final class PermissionConstants {
-    private PermissionConstants() {}
 
-    public static final String USER_VIEW = "sys:user:view";
-    public static final String USER_CREATE = "sys:user:create";
-    public static final String ROLE_VIEW = "sys:role:view";
-    public static final String ROLE_CREATE = "sys:role:create";
-    public static final String ROLE_GRANT = "sys:role:grant";
-    public static final String MENU_VIEW = "sys:menu:view";
-    public static final String PERMISSION_VIEW = "sys:permission:view";
+    private PermissionConstants() {
+    }
+
+    public static final String AUTH_USER_VIEW = "auth:user:view";
+    public static final String AUTH_USER_CREATE = "auth:user:create";
+    public static final String AUTH_USER_UPDATE = "auth:user:update";
+    public static final String AUTH_USER_RESET_PASSWORD = "auth:user:resetPassword";
+
+    public static final String AUTH_ROLE_VIEW = "auth:role:view";
+    public static final String AUTH_ROLE_CREATE = "auth:role:create";
+    public static final String AUTH_ROLE_GRANT = "auth:role:grant";
+
+    public static final String AUTH_MENU_VIEW = "auth:menu:view";
+    public static final String AUTH_PERMISSION_VIEW = "auth:permission:view";
+
     public static final String CMS_ARTICLE_VIEW = "cms:article:view";
     public static final String CMS_ARTICLE_CREATE = "cms:article:create";
     public static final String CMS_ARTICLE_UPDATE = "cms:article:update";
     public static final String CMS_ARTICLE_PUBLISH = "cms:article:publish";
-    public static final String LEAD_VIEW = "lead:record:view";
-    public static final String LEAD_ASSIGN = "lead:record:assign";
-    public static final String LEAD_FOLLOW = "lead:record:follow";
-    public static final String CONFIG_VIEW = "system:config:view";
-    public static final String CONFIG_UPDATE = "system:config:update";
-    public static final String AUDIT_VIEW = "audit:log:view";
+
+    public static final String LEAD_RECORD_VIEW = "lead:record:view";
+    public static final String LEAD_RECORD_ASSIGN = "lead:record:assign";
+    public static final String LEAD_RECORD_FOLLOW = "lead:record:follow";
+
+    public static final String SITE_CONFIG_VIEW = "site:config:view";
+    public static final String SITE_CONFIG_UPDATE = "site:config:update";
+
+    public static final String SYSTEM_CONFIG_VIEW = "system:config:view";
+    public static final String SYSTEM_CONFIG_UPDATE = "system:config:update";
+
+    public static final String AUDIT_LOG_VIEW = "audit:log:view";
+
+    /** @deprecated use {@link #AUTH_USER_VIEW}. */ @Deprecated public static final String USER_VIEW = AUTH_USER_VIEW;
+    /** @deprecated use {@link #AUTH_USER_CREATE}. */ @Deprecated public static final String USER_CREATE = AUTH_USER_CREATE;
+    /** @deprecated use {@link #AUTH_ROLE_VIEW}. */ @Deprecated public static final String ROLE_VIEW = AUTH_ROLE_VIEW;
+    /** @deprecated use {@link #AUTH_ROLE_CREATE}. */ @Deprecated public static final String ROLE_CREATE = AUTH_ROLE_CREATE;
+    /** @deprecated use {@link #AUTH_ROLE_GRANT}. */ @Deprecated public static final String ROLE_GRANT = AUTH_ROLE_GRANT;
+    /** @deprecated use {@link #AUTH_MENU_VIEW}. */ @Deprecated public static final String MENU_VIEW = AUTH_MENU_VIEW;
+    /** @deprecated use {@link #AUTH_PERMISSION_VIEW}. */ @Deprecated public static final String PERMISSION_VIEW = AUTH_PERMISSION_VIEW;
+    /** @deprecated use {@link #LEAD_RECORD_VIEW}. */ @Deprecated public static final String LEAD_VIEW = LEAD_RECORD_VIEW;
+    /** @deprecated use {@link #LEAD_RECORD_ASSIGN}. */ @Deprecated public static final String LEAD_ASSIGN = LEAD_RECORD_ASSIGN;
+    /** @deprecated use {@link #LEAD_RECORD_FOLLOW}. */ @Deprecated public static final String LEAD_FOLLOW = LEAD_RECORD_FOLLOW;
+    /** @deprecated use {@link #SYSTEM_CONFIG_VIEW}. */ @Deprecated public static final String CONFIG_VIEW = SYSTEM_CONFIG_VIEW;
+    /** @deprecated use {@link #SYSTEM_CONFIG_UPDATE}. */ @Deprecated public static final String CONFIG_UPDATE = SYSTEM_CONFIG_UPDATE;
+    /** @deprecated use {@link #AUDIT_LOG_VIEW}. */ @Deprecated public static final String AUDIT_VIEW = AUDIT_LOG_VIEW;
 }

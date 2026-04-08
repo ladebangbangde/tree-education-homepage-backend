@@ -14,10 +14,13 @@ import lombok.Setter;
 public class CmsArticle extends BaseEntity {
     @Column(nullable = false)
     private String title;
-    @Column(columnDefinition = "TEXT")
+
+    @Column(name = "content_markdown", columnDefinition = "LONGTEXT")
     private String content;
+
     @Column(name = "column_id", nullable = false)
     private Long columnId;
+
     @Column(nullable = false)
     private String status;
 }

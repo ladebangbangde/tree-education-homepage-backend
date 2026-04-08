@@ -14,8 +14,10 @@ import lombok.Setter;
 public class SysConfigItem extends BaseEntity {
     @Column(name = "config_key", nullable = false, unique = true)
     private String configKey;
+
     @Column(name = "config_value", nullable = false)
     private String configValue;
-    @Column(name = "description")
+
+    @Column(name = "remark")
     private String description;
 }

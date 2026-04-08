@@ -14,8 +14,16 @@ import lombok.Setter;
 public class CmsArticleVersion extends BaseEntity {
     @Column(name = "article_id", nullable = false)
     private Long articleId;
+
     @Column(name = "version_no", nullable = false)
     private Integer versionNo;
-    @Column(columnDefinition = "TEXT")
+
+    @Column(name = "content_markdown_snapshot", columnDefinition = "LONGTEXT")
     private String snapshot;
+
+    @Column(name = "title_snapshot", nullable = false)
+    private String titleSnapshot;
+
+    @Column(name = "version_status", nullable = false)
+    private String versionStatus = "DRAFT";
 }

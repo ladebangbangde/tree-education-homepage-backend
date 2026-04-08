@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: official-admin-api
@@ -5,6 +8,8 @@ spring:
     active: local
   jackson:
     time-zone: UTC
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: false
     hibernate:
@@ -15,21 +20,34 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-
-server:
-  port: 8080
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics
+    baseline-on-migrate: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 3s
 
 security:
   jwt:
     secret: ${JWT_SECRET:U3VwZXJTZWNyZXRLZXlGb3JPZmZpY2lhbEFkbWluQVBJU3VwZXI=}
     expiration-seconds: ${JWT_EXPIRE_SECONDS:7200}
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
 springdoc:
+  api-docs:
+    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+logging:
+  level:
+    root: INFO
+    com.company.admin: INFO

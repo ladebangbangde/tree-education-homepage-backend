@@ -1,13 +1,16 @@
 package com.company.admin.common.exception;
 
-import lombok.Getter;
-
-@Getter
-public class BizException extends RuntimeException {
-    private final ErrorCode errorCode;
+/**
+ * @deprecated 请使用 {@link BusinessException}
+ */
+@Deprecated
+public class BizException extends BusinessException {
 
     public BizException(ErrorCode errorCode, String message) {
-        super(message);
-        this.errorCode = errorCode;
+        super(errorCode, message);
+    }
+
+    public BizException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

@@ -1,7 +1,7 @@
 package com.company.admin.modules.lead.application;
 
 import com.company.admin.common.audit.AuditOperation;
-import com.company.admin.common.exception.BizException;
+import com.company.admin.common.exception.BusinessException;
 import com.company.admin.common.exception.ErrorCode;
 import com.company.admin.modules.lead.dto.AssignLeadRequest;
 import com.company.admin.modules.lead.dto.CreateFollowRecordRequest;
@@ -30,12 +30,12 @@ public class LeadApplicationService {
     public List<LeadVO> list() { return repository.findAll().stream().map(mapper::toVO).toList(); }
 
     public LeadVO detail(Long id) {
-        return mapper.toVO(repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "线索不存在")));
+        return mapper.toVO(repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "线索不存在")));
     }
 
     @AuditOperation(module = "LEAD", action = "ASSIGN_LEAD", highRisk = true)
     public void assign(Long id, AssignLeadRequest request) {
-        LeadRecord lead = repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "线索不存在"));
+        LeadRecord lead = repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "线索不存在"));
         lead.setAssignedTo(request.getAssignedTo());
         lead.setStatus("ASSIGNED");
         repository.save(lead);
@@ -43,7 +43,7 @@ public class LeadApplicationService {
 
     @AuditOperation(module = "LEAD", action = "ADD_FOLLOW")
     public void addFollowRecord(Long id, CreateFollowRecordRequest request) {
-        LeadRecord lead = repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "线索不存在"));
+        LeadRecord lead = repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "线索不存在"));
         LeadFollowRecord follow = new LeadFollowRecord();
         follow.setLeadId(lead.getId());
         follow.setFollowContent(request.getFollowContent());

@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -14,6 +16,13 @@ import lombok.Setter;
 public class LeadFollowRecord extends BaseEntity {
     @Column(name = "lead_id", nullable = false)
     private Long leadId;
+
     @Column(name = "follow_content", nullable = false)
     private String followContent;
+
+    @Column(name = "follow_type", nullable = false)
+    private String followType = "MANUAL";
+
+    @Column(name = "follow_at", nullable = false)
+    private LocalDateTime followAt = LocalDateTime.now();
 }

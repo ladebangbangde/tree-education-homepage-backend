@@ -1,7 +1,7 @@
 package com.company.admin.modules.systemconfig.application;
 
 import com.company.admin.common.audit.AuditOperation;
-import com.company.admin.common.exception.BizException;
+import com.company.admin.common.exception.BusinessException;
 import com.company.admin.common.exception.ErrorCode;
 import com.company.admin.modules.systemconfig.dto.UpdateConfigItemRequest;
 import com.company.admin.modules.systemconfig.mapper.ConfigItemMapper;
@@ -25,7 +25,7 @@ public class SystemConfigApplicationService {
 
     @AuditOperation(module = "SYSTEM", action = "UPDATE_CONFIG", highRisk = true)
     public ConfigItemVO update(Long id, UpdateConfigItemRequest request) {
-        var item = repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "配置项不存在"));
+        var item = repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "配置项不存在"));
         item.setConfigValue(request.getConfigValue());
         return mapper.toVO(repository.save(item));
     }

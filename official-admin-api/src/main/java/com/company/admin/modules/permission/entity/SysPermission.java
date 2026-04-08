@@ -14,8 +14,10 @@ import lombok.Setter;
 public class SysPermission extends BaseEntity {
     @Column(name = "permission_code", nullable = false, unique = true)
     private String permissionCode;
+
     @Column(name = "permission_name", nullable = false)
     private String permissionName;
-    @Column(nullable = false)
+
+    @Column(name = "module_key", nullable = false)
     private String module;
 }

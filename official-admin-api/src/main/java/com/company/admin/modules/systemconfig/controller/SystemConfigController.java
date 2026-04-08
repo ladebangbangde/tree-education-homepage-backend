@@ -3,6 +3,7 @@ package com.company.admin.modules.systemconfig.controller;
 import com.company.admin.common.api.ApiControllerSupport;
 import com.company.admin.common.constants.PermissionConstants;
 import com.company.admin.common.response.ApiResponse;
+import com.company.admin.common.response.PageResponse;
 import com.company.admin.modules.systemconfig.application.SystemConfigApplicationService;
 import com.company.admin.modules.systemconfig.dto.UpdateConfigItemRequest;
 import com.company.admin.modules.systemconfig.vo.ConfigItemVO;
@@ -20,11 +21,14 @@ public class SystemConfigController implements ApiControllerSupport {
     public SystemConfigController(SystemConfigApplicationService service) { this.service = service; }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('" + PermissionConstants.CONFIG_VIEW + "')")
-    public ApiResponse<List<ConfigItemVO>> list() { return ok(service.list()); }
+    @PreAuthorize("hasAuthority('" + PermissionConstants.SYSTEM_CONFIG_VIEW + "')")
+    public ApiResponse<PageResponse<ConfigItemVO>> list() {
+        List<ConfigItemVO> items = service.list();
+        return ok(PageResponse.of(items, 1, items.size(), items.size()));
+    }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.CONFIG_UPDATE + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.SYSTEM_CONFIG_UPDATE + "')")
     public ApiResponse<ConfigItemVO> update(@PathVariable Long id, @Valid @RequestBody UpdateConfigItemRequest request) {
         return ok(service.update(id, request));
     }

@@ -3,6 +3,7 @@ package com.company.admin.modules.role.controller;
 import com.company.admin.common.api.ApiControllerSupport;
 import com.company.admin.common.constants.PermissionConstants;
 import com.company.admin.common.response.ApiResponse;
+import com.company.admin.common.response.PageResponse;
 import com.company.admin.modules.role.application.RoleApplicationService;
 import com.company.admin.modules.role.dto.CreateRoleRequest;
 import com.company.admin.modules.role.dto.RolePermissionGrantRequest;
@@ -21,15 +22,18 @@ public class RoleController implements ApiControllerSupport {
     public RoleController(RoleApplicationService service) { this.service = service; }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('" + PermissionConstants.ROLE_VIEW + "')")
-    public ApiResponse<List<RoleVO>> list() { return ok(service.list()); }
+    @PreAuthorize("hasAuthority('" + PermissionConstants.AUTH_ROLE_VIEW + "')")
+    public ApiResponse<PageResponse<RoleVO>> list() {
+        List<RoleVO> roles = service.list();
+        return ok(PageResponse.of(roles, 1, roles.size(), roles.size()));
+    }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('" + PermissionConstants.ROLE_CREATE + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.AUTH_ROLE_CREATE + "')")
     public ApiResponse<RoleVO> create(@Valid @RequestBody CreateRoleRequest request) { return ok(service.create(request)); }
 
     @PutMapping("/{id}/permissions")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.ROLE_GRANT + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.AUTH_ROLE_GRANT + "')")
     public ApiResponse<Void> grantPermissions(@PathVariable Long id, @RequestBody RolePermissionGrantRequest request) {
         service.grantPermissions(id, request);
         return ok(null);

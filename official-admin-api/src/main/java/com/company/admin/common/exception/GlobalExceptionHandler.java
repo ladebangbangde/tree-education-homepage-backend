@@ -17,37 +17,43 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BizException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBiz(BizException e) {
-        return ResponseEntity.badRequest().body(ApiResponse.failure(e.getErrorCode().getCode(), e.getMessage(), TraceIdHolder.get()));
+    @ExceptionHandler({BusinessException.class, BizException.class})
+    public ResponseEntity<ApiResponse<Void>> handleBusiness(RuntimeException e) {
+        BusinessException ex = (BusinessException) e;
+        return ResponseEntity.badRequest()
+            .body(ApiResponse.failure(ex.getErrorCode().getCode(), ex.getMessage(), TraceIdHolder.get()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException e) {
-        String msg = e.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(";"));
-        return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.BAD_REQUEST.getCode(), msg, TraceIdHolder.get()));
+        String msg = e.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(FieldError::getDefaultMessage)
+            .collect(Collectors.joining(";"));
+        return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.PARAM_INVALID.getCode(), msg, TraceIdHolder.get()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleConstraint(ConstraintViolationException e) {
-        return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.BAD_REQUEST.getCode(), e.getMessage(), TraceIdHolder.get()));
+        return ResponseEntity.badRequest().body(ApiResponse.failure(ErrorCode.PARAM_INVALID.getCode(), e.getMessage(), TraceIdHolder.get()));
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiResponse<Void>> handleAuth(AuthenticationException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiResponse.failure(ErrorCode.UNAUTHORIZED.getCode(), ErrorCode.UNAUTHORIZED.getMessage(), TraceIdHolder.get()));
+            .body(ApiResponse.failure(ErrorCode.UNAUTHORIZED.getCode(), ErrorCode.UNAUTHORIZED.getMessage(), TraceIdHolder.get()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleForbidden(AccessDeniedException e) {
+    public ResponseEntity<ApiResponse<Void>> handleDenied(AccessDeniedException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.failure(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage(), TraceIdHolder.get()));
+            .body(ApiResponse.failure(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage(), TraceIdHolder.get()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Void>> handleDefault(Exception e) {
+    public ResponseEntity<ApiResponse<Void>> handleUnknown(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.failure(ErrorCode.INTERNAL_ERROR.getCode(), ErrorCode.INTERNAL_ERROR.getMessage(), TraceIdHolder.get()));
+            .body(ApiResponse.failure(ErrorCode.INTERNAL_ERROR.getCode(), ErrorCode.INTERNAL_ERROR.getMessage(), TraceIdHolder.get()));
     }
 }

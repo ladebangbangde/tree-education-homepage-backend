@@ -14,8 +14,10 @@ import lombok.Setter;
 public class SysLoginLog extends BaseEntity {
     @Column(nullable = false)
     private String username;
+
     @Column(name = "ip_address", nullable = false)
     private String ipAddress;
-    @Column(name = "result_status", nullable = false)
+
+    @Column(name = "login_result", nullable = false)
     private String resultStatus;
 }

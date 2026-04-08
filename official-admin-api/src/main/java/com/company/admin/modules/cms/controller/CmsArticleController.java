@@ -3,6 +3,7 @@ package com.company.admin.modules.cms.controller;
 import com.company.admin.common.api.ApiControllerSupport;
 import com.company.admin.common.constants.PermissionConstants;
 import com.company.admin.common.response.ApiResponse;
+import com.company.admin.common.response.PageResponse;
 import com.company.admin.modules.cms.application.CmsArticleApplicationService;
 import com.company.admin.modules.cms.dto.ArticleUpsertRequest;
 import com.company.admin.modules.cms.vo.ArticleVO;
@@ -21,7 +22,10 @@ public class CmsArticleController implements ApiControllerSupport {
 
     @GetMapping
     @PreAuthorize("hasAuthority('" + PermissionConstants.CMS_ARTICLE_VIEW + "')")
-    public ApiResponse<List<ArticleVO>> list() { return ok(service.list()); }
+    public ApiResponse<PageResponse<ArticleVO>> list() {
+        List<ArticleVO> records = service.list();
+        return ok(PageResponse.of(records, 1, records.size(), records.size()));
+    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('" + PermissionConstants.CMS_ARTICLE_CREATE + "')")

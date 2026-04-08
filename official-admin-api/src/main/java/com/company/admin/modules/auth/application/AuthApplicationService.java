@@ -1,6 +1,6 @@
 package com.company.admin.modules.auth.application;
 
-import com.company.admin.common.exception.BizException;
+import com.company.admin.common.exception.BusinessException;
 import com.company.admin.common.exception.ErrorCode;
 import com.company.admin.common.security.AdminUserDetails;
 import com.company.admin.common.security.JwtTokenService;
@@ -47,10 +47,10 @@ public class AuthApplicationService {
 
     public LoginResponse login(LoginRequest request, HttpServletRequest httpServletRequest) {
         SysUser user = userRepository.findByUsernameAndDeletedFlagFalse(request.getUsername())
-                .orElseThrow(() -> new BizException(ErrorCode.UNAUTHORIZED, "账号或密码错误"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             saveLoginLog(request.getUsername(), httpServletRequest.getRemoteAddr(), "FAIL");
-            throw new BizException(ErrorCode.UNAUTHORIZED, "账号或密码错误");
+            throw new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误");
         }
         List<Long> roleIds = userRoleRepository.findByUserIdAndDeletedFlagFalse(user.getId()).stream().map(r -> r.getRoleId()).toList();
         List<Long> permissionIds = rolePermissionRepository.findByRoleIdInAndDeletedFlagFalse(roleIds).stream().map(p -> p.getPermissionId()).toList();

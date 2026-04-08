@@ -89,3 +89,72 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 - `GET /api/admin/system/config-items`
 - `GET /api/admin/audit/operation-logs`
 - `GET /api/admin/site/config`
+
+## Docker Compose 部署（宿主机 MySQL / Redis）
+
+### 目录说明
+
+在仓库根目录新增了以下部署文件：
+
+- `docker-compose.yml`：仅启动 `official-admin-api` 容器
+- `.env.example`：环境变量模板（部署前复制为 `.env`）
+- `deploy/nginx/admin-api.conf`：宿主机 Nginx 反向代理参考配置
+- `official-admin-api/Dockerfile`：Spring Boot 服务镜像构建文件
+- `official-admin-api/.dockerignore`：Docker 构建忽略文件
+
+### 1) 准备环境变量
+
+在仓库根目录执行：
+
+```bash
+cp .env.example .env
+```
+
+然后按服务器实际配置修改 `.env`，尤其是以下配置：
+
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+- `REDIS_HOST`
+- `REDIS_PORT`
+- `JWT_SECRET`
+
+### 2) 确认宿主机 MySQL / Redis 已启动
+
+在目标服务器上确认：
+
+- MySQL 服务可用（默认示例地址：`host.docker.internal:3306`）
+- Redis 服务可用（默认示例地址：`host.docker.internal:6379`）
+- MySQL/Redis 监听地址不能仅限 `127.0.0.1`，需允许容器访问；或至少保证 `host.docker.internal` 可通
+
+### 3) 启动服务
+
+在仓库根目录执行：
+
+```bash
+docker compose up -d --build
+```
+
+查看日志：
+
+```bash
+docker compose logs -f admin-api
+```
+
+停止并清理容器：
+
+```bash
+docker compose down
+```
+
+### 4) 启动后访问
+
+- Swagger UI: `http://127.0.0.1:8080/swagger-ui.html`
+- OpenAPI JSON: `http://127.0.0.1:8080/v3/api-docs`
+- Actuator Health: `http://127.0.0.1:8080/actuator/health`
+
+### 5) Nginx 反向代理建议
+
+`docker-compose.yml` 中端口映射为 `127.0.0.1:${APP_PORT:-8080}:8080`，即仅绑定宿主机本地回环地址，不直接暴露公网端口。
+
+生产环境建议由宿主机 Nginx 对外提供访问入口，并反向代理到 `http://127.0.0.1:8080`。可参考 `deploy/nginx/admin-api.conf` 模板。

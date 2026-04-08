@@ -1,0 +1,20 @@
+services:
+  admin-api:
+    build:
+      context: ./official-admin-api
+      dockerfile: Dockerfile
+    container_name: official-admin-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: ${DB_URL:-jdbc:mysql://host.docker.internal:3306/official_admin?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=utf8&createDatabaseIfNotExist=true}
+      DB_USERNAME: ${DB_USERNAME:-admin_api}
+      DB_PASSWORD: ${DB_PASSWORD:-change_me}
+      REDIS_HOST: ${REDIS_HOST:-host.docker.internal}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      JWT_SECRET: ${JWT_SECRET:-replace_with_your_own_long_secret}
+      JWT_EXPIRE_SECONDS: ${JWT_EXPIRE_SECONDS:-7200}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

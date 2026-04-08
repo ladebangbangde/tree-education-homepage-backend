@@ -9,7 +9,11 @@ public final class CurrentUserContext {
     }
 
     public static Long userId() {
-        Object principal = authentication().getPrincipal();
+        Authentication authentication = authentication();
+        if (authentication == null) {
+            return 0L;
+        }
+        Object principal = authentication.getPrincipal();
         if (principal instanceof AdminUserDetails userDetails) {
             return userDetails.getId();
         }
@@ -17,7 +21,11 @@ public final class CurrentUserContext {
     }
 
     public static String username() {
-        Object principal = authentication().getPrincipal();
+        Authentication authentication = authentication();
+        if (authentication == null) {
+            return "anonymous";
+        }
+        Object principal = authentication.getPrincipal();
         if (principal instanceof AdminUserDetails userDetails) {
             return userDetails.getUsername();
         }

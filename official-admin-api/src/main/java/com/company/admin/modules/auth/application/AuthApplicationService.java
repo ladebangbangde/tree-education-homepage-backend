@@ -49,14 +49,20 @@ public class AuthApplicationService {
         SysUser user = userRepository.findByUsernameAndDeletedFlagFalse(request.getUsername())
                 .orElseThrow(() -> new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            saveLoginLog(request.getUsername(), httpServletRequest.getRemoteAddr(), "FAIL");
+            saveLoginLog(null, request.getUsername(), httpServletRequest, "FAIL", "账号或密码错误");
             throw new BusinessException(ErrorCode.UNAUTHORIZED, "账号或密码错误");
         }
         List<Long> roleIds = userRoleRepository.findByUserIdAndDeletedFlagFalse(user.getId()).stream().map(r -> r.getRoleId()).toList();
-        List<Long> permissionIds = rolePermissionRepository.findByRoleIdInAndDeletedFlagFalse(roleIds).stream().map(p -> p.getPermissionId()).toList();
-        List<String> permissions = permissionRepository.findByIdIn(permissionIds).stream().map(SysPermission::getPermissionCode).distinct().toList();
+        List<String> permissions;
+        if (roleIds.isEmpty()) {
+            permissions = List.of();
+        } else {
+            List<Long> permissionIds = rolePermissionRepository.findByRoleIdInAndDeletedFlagFalse(roleIds).stream().map(p -> p.getPermissionId()).toList();
+            permissions = permissionIds.isEmpty() ? List.of() :
+                permissionRepository.findByIdIn(permissionIds).stream().map(SysPermission::getPermissionCode).distinct().toList();
+        }
         String token = jwtTokenService.generateToken(user.getId(), user.getUsername(), user.getDisplayName(), permissions);
-        saveLoginLog(request.getUsername(), httpServletRequest.getRemoteAddr(), "SUCCESS");
+        saveLoginLog(user.getId(), request.getUsername(), httpServletRequest, "SUCCESS", null);
         return LoginResponse.builder().token(token).userId(user.getId()).username(user.getUsername())
                 .displayName(user.getDisplayName()).permissions(permissions).build();
     }
@@ -67,11 +73,14 @@ public class AuthApplicationService {
                 .permissions(user.getAuthorities().stream().map(a -> a.getAuthority()).toList()).build();
     }
 
-    private void saveLoginLog(String username, String ipAddress, String resultStatus) {
+    private void saveLoginLog(Long userId, String username, HttpServletRequest request, String resultStatus, String failReason) {
         SysLoginLog log = new SysLoginLog();
+        log.setUserId(userId);
         log.setUsername(username);
-        log.setIpAddress(ipAddress == null ? "unknown" : ipAddress);
+        log.setIpAddress(request.getRemoteAddr() == null ? "unknown" : request.getRemoteAddr());
         log.setResultStatus(resultStatus);
+        log.setUserAgent(request.getHeader("User-Agent"));
+        log.setFailReason(failReason);
         loginLogRepository.save(log);
     }
 }

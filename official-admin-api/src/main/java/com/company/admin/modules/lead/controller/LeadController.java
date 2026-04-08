@@ -3,6 +3,7 @@ package com.company.admin.modules.lead.controller;
 import com.company.admin.common.api.ApiControllerSupport;
 import com.company.admin.common.constants.PermissionConstants;
 import com.company.admin.common.response.ApiResponse;
+import com.company.admin.common.response.PageResponse;
 import com.company.admin.modules.lead.application.LeadApplicationService;
 import com.company.admin.modules.lead.dto.AssignLeadRequest;
 import com.company.admin.modules.lead.dto.CreateFollowRecordRequest;
@@ -21,18 +22,21 @@ public class LeadController implements ApiControllerSupport {
     public LeadController(LeadApplicationService service) { this.service = service; }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_VIEW + "')")
-    public ApiResponse<List<LeadVO>> list() { return ok(service.list()); }
+    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_RECORD_VIEW + "')")
+    public ApiResponse<PageResponse<LeadVO>> list() {
+        List<LeadVO> leads = service.list();
+        return ok(PageResponse.of(leads, 1, leads.size(), leads.size()));
+    }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_VIEW + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_RECORD_VIEW + "')")
     public ApiResponse<LeadVO> detail(@PathVariable Long id) { return ok(service.detail(id)); }
 
     @PutMapping("/{id}/assign")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_ASSIGN + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_RECORD_ASSIGN + "')")
     public ApiResponse<Void> assign(@PathVariable Long id, @Valid @RequestBody AssignLeadRequest request) { service.assign(id, request); return ok(null); }
 
     @PostMapping("/{id}/follow-records")
-    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_FOLLOW + "')")
+    @PreAuthorize("hasAuthority('" + PermissionConstants.LEAD_RECORD_FOLLOW + "')")
     public ApiResponse<Void> addFollowRecord(@PathVariable Long id, @Valid @RequestBody CreateFollowRecordRequest request) { service.addFollowRecord(id, request); return ok(null); }
 }

@@ -43,7 +43,9 @@ VALUES
   (15, 'site:config:update', '站点配置更新', 'site', 'config', 'update', 1, 0, 0),
   (16, 'system:config:view', '系统配置查看', 'system', 'config', 'view', 1, 0, 0),
   (17, 'system:config:update', '系统配置更新', 'system', 'config', 'update', 1, 0, 0),
-  (18, 'audit:log:view', '审计日志查看', 'audit', 'log', 'view', 1, 0, 0);
+  (18, 'audit:log:view', '审计日志查看', 'audit', 'log', 'view', 1, 0, 0),
+  (19, 'auth:menu:view', '菜单查看', 'auth', 'menu', 'view', 1, 0, 0),
+  (20, 'auth:permission:view', '权限点查看', 'auth', 'permission', 'view', 1, 0, 0);
 
 INSERT INTO sys_role_permission (id, role_id, permission_id, created_by, updated_by)
 VALUES
@@ -51,7 +53,8 @@ VALUES
   (4, 1, 4, 0, 0), (5, 1, 5, 0, 0), (6, 1, 6, 0, 0),
   (7, 1, 7, 0, 0), (8, 1, 8, 0, 0), (9, 1, 9, 0, 0), (10, 1, 10, 0, 0),
   (11, 1, 11, 0, 0), (12, 1, 12, 0, 0), (13, 1, 13, 0, 0),
-  (14, 1, 14, 0, 0), (15, 1, 15, 0, 0), (16, 1, 16, 0, 0), (17, 1, 17, 0, 0), (18, 1, 18, 0, 0);
+  (14, 1, 14, 0, 0), (15, 1, 15, 0, 0), (16, 1, 16, 0, 0), (17, 1, 17, 0, 0), (18, 1, 18, 0, 0),
+  (19, 1, 19, 0, 0), (20, 1, 20, 0, 0);
 
 INSERT INTO sys_data_scope_policy (id, role_id, module_key, scope_type, scope_value_json, enabled, created_by, updated_by)
 VALUES

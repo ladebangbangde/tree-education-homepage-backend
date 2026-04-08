@@ -14,14 +14,22 @@ import lombok.Setter;
 public class SysUser extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String username;
+
     @Column(name = "display_name", nullable = false)
     private String displayName;
-    @Column(nullable = false)
+
+    @Column(name = "password_hash", nullable = false)
     private String password;
+
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String status;
+
     @Column(name = "department_id")
     private Long departmentId;
+
+    @Column(nullable = false)
+    private Boolean enabled = Boolean.TRUE;
 }

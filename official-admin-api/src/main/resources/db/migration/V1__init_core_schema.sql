@@ -273,6 +273,7 @@ CREATE TABLE IF NOT EXISTS lead_follow_record (
   next_follow_at DATETIME DEFAULT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by BIGINT NOT NULL DEFAULT 0,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_lead_follow_lead_time (lead_id, follow_at),
   CONSTRAINT fk_lead_follow_record_lead FOREIGN KEY (lead_id) REFERENCES lead_record(id)
 );
@@ -286,6 +287,7 @@ CREATE TABLE IF NOT EXISTS lead_assign_record (
   assigned_at DATETIME NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by BIGINT NOT NULL DEFAULT 0,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_lead_assign_lead_time (lead_id, assigned_at),
   KEY idx_lead_assign_to_user (to_user_id, assigned_at),
   CONSTRAINT fk_lead_assign_record_lead FOREIGN KEY (lead_id) REFERENCES lead_record(id)
@@ -337,6 +339,7 @@ CREATE TABLE IF NOT EXISTS sys_login_log (
   user_agent VARCHAR(512) DEFAULT NULL,
   fail_reason VARCHAR(255) DEFAULT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_sys_login_log_user_time (user_id, created_at),
   KEY idx_sys_login_log_result_time (login_result, created_at)
 );
@@ -356,9 +359,11 @@ CREATE TABLE IF NOT EXISTS sys_operation_log (
   success_flag TINYINT(1) NOT NULL DEFAULT 1,
   ip_address VARCHAR(64) DEFAULT NULL,
   user_agent VARCHAR(512) DEFAULT NULL,
+  risk_tag VARCHAR(64) DEFAULT NULL,
   before_snapshot LONGTEXT,
   after_snapshot LONGTEXT,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_sys_operation_log_time (created_at),
   KEY idx_sys_operation_log_biz (biz_type, biz_id),
   KEY idx_sys_operation_log_operator (operator_id, created_at)
@@ -375,6 +380,7 @@ CREATE TABLE IF NOT EXISTS sys_publish_log (
   summary VARCHAR(1024) DEFAULT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by BIGINT NOT NULL DEFAULT 0,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_sys_publish_log_biz (biz_type, biz_id, created_at),
   KEY idx_sys_publish_log_status_time (publish_status, created_at)
 );
@@ -390,6 +396,7 @@ CREATE TABLE IF NOT EXISTS sys_security_audit_log (
   detail VARCHAR(2048) DEFAULT NULL,
   risk_tag VARCHAR(64) DEFAULT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_flag TINYINT(1) NOT NULL DEFAULT 0,
   KEY idx_sys_security_audit_log_time (created_at),
   KEY idx_sys_security_audit_log_event (event_type, created_at),
   KEY idx_sys_security_audit_log_user (user_id, created_at)

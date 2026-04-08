@@ -14,10 +14,13 @@ import lombok.Setter;
 public class SysMenu extends BaseEntity {
     @Column(name = "parent_id")
     private Long parentId;
+
     @Column(name = "menu_name", nullable = false)
     private String menuName;
-    @Column(name = "menu_path", nullable = false)
+
+    @Column(name = "route_path")
     private String menuPath;
+
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder;
 }

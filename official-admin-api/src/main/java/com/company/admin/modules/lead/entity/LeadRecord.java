@@ -12,12 +12,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "lead_record")
 public class LeadRecord extends BaseEntity {
+    @Column(name = "lead_no", nullable = false)
+    private String leadNo;
+
     @Column(name = "student_name", nullable = false)
     private String studentName;
+
     @Column(nullable = false)
     private String phone;
+
     @Column(nullable = false)
     private String status;
-    @Column(name = "assigned_to")
+
+    @Column(name = "consultant_user_id")
     private Long assignedTo;
 }

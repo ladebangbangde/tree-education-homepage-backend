@@ -1,7 +1,7 @@
 package com.company.admin.modules.cms.application;
 
 import com.company.admin.common.audit.AuditOperation;
-import com.company.admin.common.exception.BizException;
+import com.company.admin.common.exception.BusinessException;
 import com.company.admin.common.exception.ErrorCode;
 import com.company.admin.modules.cms.dto.ArticleUpsertRequest;
 import com.company.admin.modules.cms.entity.CmsArticle;
@@ -26,38 +26,48 @@ public class CmsArticleApplicationService {
         this.mapper = mapper;
     }
 
-    public List<ArticleVO> list() { return repository.findAll().stream().map(mapper::toVO).toList(); }
+    public List<ArticleVO> list() {
+        return repository.findAll().stream().map(mapper::toVO).toList();
+    }
 
     @AuditOperation(module = "CMS", action = "CREATE_ARTICLE")
     public ArticleVO create(ArticleUpsertRequest request) {
         CmsArticle article = new CmsArticle();
-        article.setTitle(request.getTitle()); article.setContent(request.getContent()); article.setColumnId(request.getColumnId()); article.setStatus("DRAFT");
+        article.setTitle(request.getTitle());
+        article.setContent(request.getContent());
+        article.setColumnId(request.getColumnId());
+        article.setStatus("DRAFT");
         CmsArticle saved = repository.save(article);
-        saveVersion(saved);
+        saveVersion(saved, "DRAFT");
         return mapper.toVO(saved);
     }
 
     @AuditOperation(module = "CMS", action = "UPDATE_ARTICLE")
     public ArticleVO update(Long id, ArticleUpsertRequest request) {
-        CmsArticle article = repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "文章不存在"));
-        article.setTitle(request.getTitle()); article.setContent(request.getContent()); article.setColumnId(request.getColumnId());
+        CmsArticle article = repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "文章不存在"));
+        article.setTitle(request.getTitle());
+        article.setContent(request.getContent());
+        article.setColumnId(request.getColumnId());
         CmsArticle saved = repository.save(article);
-        saveVersion(saved);
+        saveVersion(saved, "DRAFT");
         return mapper.toVO(saved);
     }
 
     @AuditOperation(module = "CMS", action = "PUBLISH_ARTICLE", highRisk = true)
     public void publish(Long id) {
-        CmsArticle article = repository.findById(id).orElseThrow(() -> new BizException(ErrorCode.NOT_FOUND, "文章不存在"));
+        CmsArticle article = repository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "文章不存在"));
         article.setStatus("PUBLISHED");
         repository.save(article);
+        saveVersion(article, "PUBLISHED");
     }
 
-    private void saveVersion(CmsArticle article) {
+    private void saveVersion(CmsArticle article, String versionStatus) {
         CmsArticleVersion v = new CmsArticleVersion();
         v.setArticleId(article.getId());
-        v.setVersionNo((int) (versionRepository.count() + 1));
+        v.setVersionNo((int) (versionRepository.countByArticleId(article.getId()) + 1));
         v.setSnapshot(article.getContent());
+        v.setTitleSnapshot(article.getTitle());
+        v.setVersionStatus(versionStatus);
         versionRepository.save(v);
     }
 }

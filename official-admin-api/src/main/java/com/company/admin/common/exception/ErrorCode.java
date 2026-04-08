@@ -2,9 +2,6 @@ package com.company.admin.common.exception;
 
 import lombok.Getter;
 
-/**
- * 企业后台错误码。
- */
 @Getter
 public enum ErrorCode {
 
@@ -24,13 +21,8 @@ public enum ErrorCode {
     DATA_DUPLICATE("D002", "数据重复"),
     FILE_UPLOAD_FAILED("D003", "文件上传失败"),
 
-    NOT_FOUND("D001", "资源不存在"),
-    BUSINESS_ERROR("C001", "业务处理失败"),
-
     SYSTEM_BUSY("E001", "系统繁忙，请稍后重试"),
-
-    BAD_REQUEST("4000", "请求参数错误"),
-    INTERNAL_ERROR("5000", "系统内部异常");
+    INTERNAL_ERROR("E999", "系统内部异常");
 
     private final String code;
     private final String message;

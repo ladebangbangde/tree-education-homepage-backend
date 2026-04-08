@@ -17,6 +17,9 @@ public final class PermissionConstants {
     public static final String AUTH_ROLE_CREATE = "auth:role:create";
     public static final String AUTH_ROLE_GRANT = "auth:role:grant";
 
+    public static final String AUTH_MENU_VIEW = "auth:menu:view";
+    public static final String AUTH_PERMISSION_VIEW = "auth:permission:view";
+
     public static final String CMS_ARTICLE_VIEW = "cms:article:view";
     public static final String CMS_ARTICLE_CREATE = "cms:article:create";
     public static final String CMS_ARTICLE_UPDATE = "cms:article:update";
@@ -34,18 +37,17 @@ public final class PermissionConstants {
 
     public static final String AUDIT_LOG_VIEW = "audit:log:view";
 
-    // legacy aliases for current controllers
-    public static final String USER_VIEW = AUTH_USER_VIEW;
-    public static final String USER_CREATE = AUTH_USER_CREATE;
-    public static final String ROLE_VIEW = AUTH_ROLE_VIEW;
-    public static final String ROLE_CREATE = AUTH_ROLE_CREATE;
-    public static final String ROLE_GRANT = AUTH_ROLE_GRANT;
-    public static final String MENU_VIEW = "sys:menu:view";
-    public static final String PERMISSION_VIEW = "sys:permission:view";
-    public static final String LEAD_VIEW = LEAD_RECORD_VIEW;
-    public static final String LEAD_ASSIGN = LEAD_RECORD_ASSIGN;
-    public static final String LEAD_FOLLOW = LEAD_RECORD_FOLLOW;
-    public static final String CONFIG_VIEW = SYSTEM_CONFIG_VIEW;
-    public static final String CONFIG_UPDATE = SYSTEM_CONFIG_UPDATE;
-    public static final String AUDIT_VIEW = AUDIT_LOG_VIEW;
+    /** @deprecated use {@link #AUTH_USER_VIEW}. */ @Deprecated public static final String USER_VIEW = AUTH_USER_VIEW;
+    /** @deprecated use {@link #AUTH_USER_CREATE}. */ @Deprecated public static final String USER_CREATE = AUTH_USER_CREATE;
+    /** @deprecated use {@link #AUTH_ROLE_VIEW}. */ @Deprecated public static final String ROLE_VIEW = AUTH_ROLE_VIEW;
+    /** @deprecated use {@link #AUTH_ROLE_CREATE}. */ @Deprecated public static final String ROLE_CREATE = AUTH_ROLE_CREATE;
+    /** @deprecated use {@link #AUTH_ROLE_GRANT}. */ @Deprecated public static final String ROLE_GRANT = AUTH_ROLE_GRANT;
+    /** @deprecated use {@link #AUTH_MENU_VIEW}. */ @Deprecated public static final String MENU_VIEW = AUTH_MENU_VIEW;
+    /** @deprecated use {@link #AUTH_PERMISSION_VIEW}. */ @Deprecated public static final String PERMISSION_VIEW = AUTH_PERMISSION_VIEW;
+    /** @deprecated use {@link #LEAD_RECORD_VIEW}. */ @Deprecated public static final String LEAD_VIEW = LEAD_RECORD_VIEW;
+    /** @deprecated use {@link #LEAD_RECORD_ASSIGN}. */ @Deprecated public static final String LEAD_ASSIGN = LEAD_RECORD_ASSIGN;
+    /** @deprecated use {@link #LEAD_RECORD_FOLLOW}. */ @Deprecated public static final String LEAD_FOLLOW = LEAD_RECORD_FOLLOW;
+    /** @deprecated use {@link #SYSTEM_CONFIG_VIEW}. */ @Deprecated public static final String CONFIG_VIEW = SYSTEM_CONFIG_VIEW;
+    /** @deprecated use {@link #SYSTEM_CONFIG_UPDATE}. */ @Deprecated public static final String CONFIG_UPDATE = SYSTEM_CONFIG_UPDATE;
+    /** @deprecated use {@link #AUDIT_LOG_VIEW}. */ @Deprecated public static final String AUDIT_VIEW = AUDIT_LOG_VIEW;
 }

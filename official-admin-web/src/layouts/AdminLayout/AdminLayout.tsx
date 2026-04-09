@@ -11,13 +11,13 @@ import {
   TeamOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import { Avatar, Button, Dropdown, Input, Layout, Menu, Space, Typography } from 'antd';
+import { Alert, Avatar, Button, Dropdown, Input, Layout, Menu, Result, Space, Spin, Typography, message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getMeApi } from '@/api/auth';
 import { getMenuTreeApi } from '@/api/menu';
 import AppBreadcrumb from '@/components/layout/AppBreadcrumb';
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@/constants/routes';
+import { LOGIN_PATH } from '@/constants/routes';
 import { useAppStore } from '@/stores/appStore';
 import { useAuthStore } from '@/stores/authStore';
 import { MenuNode } from '@/types/menu';
@@ -67,16 +67,47 @@ export default function AdminLayout() {
   const { userInfo, setUserInfo, setPermissions, logout } = useAuthStore();
 
   const [menus, setMenus] = useState<MenuNode[]>([]);
+  const [bootstrapLoading, setBootstrapLoading] = useState(true);
+  const [menuError, setMenuError] = useState('');
 
   useEffect(() => {
-    Promise.all([getMenuTreeApi(), getMeApi()])
-      .then(([menuData, me]) => {
-        setMenus(menuData);
+    let active = true;
+
+    const bootstrap = async () => {
+      setBootstrapLoading(true);
+      try {
+        const me = await getMeApi();
+        if (!active) return;
         setUserInfo(me);
         setPermissions(me.permissions || []);
-      })
-      .catch(() => undefined);
-  }, [setPermissions, setUserInfo]);
+      } catch (e: any) {
+        if (!active) return;
+        message.error(e?.message || '登录态校验失败，请重新登录');
+        logout();
+        navigate(LOGIN_PATH, { replace: true });
+        return;
+      }
+
+      try {
+        const menuData = await getMenuTreeApi();
+        if (!active) return;
+        setMenus(menuData);
+        setMenuError('');
+      } catch (e: any) {
+        if (!active) return;
+        setMenuError(e?.message || '菜单加载失败');
+      } finally {
+        if (active) {
+          setBootstrapLoading(false);
+        }
+      }
+    };
+
+    bootstrap();
+    return () => {
+      active = false;
+    };
+  }, [logout, navigate, setPermissions, setUserInfo]);
 
   useEffect(() => {
     setBreadcrumbs(getBreadcrumbTrail(menus, location.pathname));
@@ -95,6 +126,16 @@ export default function AdminLayout() {
       }
     }
   ];
+
+  if (bootstrapLoading) {
+    return (
+      <Result
+        icon={<Spin size="large" />}
+        title="正在加载后台初始化数据"
+        subTitle="请稍候，正在获取用户信息与菜单。"
+      />
+    );
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -140,6 +181,15 @@ export default function AdminLayout() {
           </div>
         </Header>
         <Content style={{ padding: 20, background: '#f3f5f9' }}>
+          {menuError && (
+            <Alert
+              type="warning"
+              showIcon
+              style={{ marginBottom: 12 }}
+              message="菜单加载失败"
+              description={menuError}
+            />
+          )}
           <div style={{ minHeight: 'calc(100vh - 104px)' }}>
             <Outlet />
           </div>

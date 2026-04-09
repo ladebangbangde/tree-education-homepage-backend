@@ -11,24 +11,37 @@ export default function AuditLogsPage() {
   const [data, setData] = useState<AuditLog[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchAuditLogs = async () => {
     setLoading(true);
-    getAuditLogsApi().then((res) => setData(res.list || [])).catch((e) => setError(e.message)).finally(() => setLoading(false));
+    setError('');
+    try {
+      const res = await getAuditLogsApi();
+      setData(res.list || []);
+    } catch (e: any) {
+      setError(e?.message || '加载失败');
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAuditLogs();
   }, []);
 
   return (
     <>
       <PageHeader title="审计日志" subtitle="后台操作记录与调用轨迹" />
       <Card>
-        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} />
+        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchAuditLogs} />
         {!loading && !error && !!data.length && <Table rowKey="id" dataSource={data} columns={[
           { title: 'operator', dataIndex: 'operator' },
           { title: 'module', dataIndex: 'module' },
           { title: 'action', dataIndex: 'action' },
           { title: 'requestPath', dataIndex: 'requestPath' },
-          { title: 'requestMethod', dataIndex: 'requestMethod' },
-          { title: 'successFlag', dataIndex: 'successFlag', render: (v) => <Tag color={v ? 'success' : 'error'}>{String(v)}</Tag> },
-          { title: 'createdAt', dataIndex: 'createdAt', render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm:ss') }
+          { title: 'resultStatus', dataIndex: 'resultStatus', render: (v) => <Tag>{v}</Tag> },
+          { title: 'riskTag', dataIndex: 'riskTag' },
+          { title: 'createdAt', dataIndex: 'createdAt', render: (v) => (v ? dayjs(v).format('YYYY-MM-DD HH:mm:ss') : '-') }
         ]} />}
       </Card>
     </>

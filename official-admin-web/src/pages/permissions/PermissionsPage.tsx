@@ -10,16 +10,29 @@ export default function PermissionsPage() {
   const [data, setData] = useState<PermissionItem[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchPermissions = async () => {
     setLoading(true);
-    getPermissionsApi().then((res) => setData(res.list || [])).catch((e) => setError(e.message)).finally(() => setLoading(false));
+    setError('');
+    try {
+      const res = await getPermissionsApi();
+      setData(res.list || []);
+    } catch (e: any) {
+      setError(e?.message || '加载失败');
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPermissions();
   }, []);
 
   return (
     <>
       <PageHeader title="权限点查看" subtitle="权限 code 与 module/resource/action 结构" />
       <Card>
-        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} />
+        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchPermissions} />
         {!loading && !error && !!data.length && <Table rowKey="code" dataSource={data} columns={[
           { title: '权限 Code', dataIndex: 'code' },
           { title: '权限名称', dataIndex: 'name' },

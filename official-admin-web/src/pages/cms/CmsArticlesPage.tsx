@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
-import { Button, Card, Form, Input, Select, Space, Table, Tag } from 'antd';
+import { Button, Card, Form, Input, Select, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import { getCmsArticlesApi } from '@/api/cms';
+import StatusTag from '@/components/common/StatusTag';
 import PageHeader from '@/components/common/PageHeader';
 import PageState from '@/components/feedback/PageState';
 import { CmsArticle } from '@/types/business';
@@ -11,9 +12,22 @@ export default function CmsArticlesPage() {
   const [data, setData] = useState<CmsArticle[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchCmsArticles = async () => {
     setLoading(true);
-    getCmsArticlesApi().then((res) => setData(res.list || [])).catch((e) => setError(e.message)).finally(() => setLoading(false));
+    setError('');
+    try {
+      const res = await getCmsArticlesApi();
+      setData(res.list || []);
+    } catch (e: any) {
+      setError(e?.message || '加载失败');
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCmsArticles();
   }, []);
 
   return (
@@ -23,12 +37,12 @@ export default function CmsArticlesPage() {
         <Form layout="inline"><Form.Item label="标题"><Input /></Form.Item><Form.Item label="状态"><Select style={{ width: 120 }} options={[{ label: '草稿', value: 'DRAFT' }, { label: '已发布', value: 'PUBLISHED' }]} /></Form.Item><Button type="primary">筛选</Button></Form>
       </Card>
       <Card>
-        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} />
+        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchCmsArticles} />
         {!loading && !error && !!data.length && <Table rowKey="id" dataSource={data} columns={[
           { title: '标题', dataIndex: 'title' },
           { title: 'Slug', dataIndex: 'slug' },
-          { title: '状态', dataIndex: 'status', render: (v) => <Tag color={v === 'PUBLISHED' ? 'success' : 'processing'}>{v}</Tag> },
-          { title: '发布时间', dataIndex: 'publishedAt', render: (v) => dayjs(v).format('YYYY-MM-DD HH:mm') },
+          { title: '状态', dataIndex: 'status', render: (v) => <StatusTag status={v} /> },
+          { title: '发布时间', dataIndex: 'publishedAt', render: (v) => (v ? dayjs(v).format('YYYY-MM-DD HH:mm') : '-') },
           { title: '操作', render: () => <Space><a>预览</a><a>编辑</a></Space> }
         ]} />}
       </Card>

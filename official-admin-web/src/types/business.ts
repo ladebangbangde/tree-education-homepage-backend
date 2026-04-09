@@ -4,7 +4,7 @@ export interface UserItem {
   displayName: string;
   email: string;
   phone: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: string;
 }
 
 export interface RoleItem {
@@ -12,7 +12,7 @@ export interface RoleItem {
   code: string;
   name: string;
   dataScope: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: string;
 }
 
 export interface PermissionItem {
@@ -27,7 +27,7 @@ export interface CmsArticle {
   id: number;
   title: string;
   slug: string;
-  status: 'DRAFT' | 'PUBLISHED';
+  status: string;
   publishedAt: string;
 }
 
@@ -38,7 +38,7 @@ export interface LeadItem {
   sourceChannel: string;
   status: string;
   consultant: string;
-  intentionLevel: 'HIGH' | 'MEDIUM' | 'LOW';
+  intentionLevel: string;
   createdAt: string;
 }
 
@@ -51,12 +51,13 @@ export interface ConfigItem {
 }
 
 export interface SiteConfig {
-  site_code: string;
-  site_name: string;
-  default_locale: string;
-  support_email: string;
-  support_phone: string;
-  status: 'ENABLED' | 'DISABLED';
+  siteCode: string;
+  siteName: string;
+  defaultLocale: string;
+  supportEmail: string;
+  supportPhone: string;
+  logoUrl: string;
+  status: string;
 }
 
 export interface AuditLog {
@@ -67,5 +68,7 @@ export interface AuditLog {
   requestPath: string;
   requestMethod: string;
   successFlag: boolean;
+  resultStatus: string;
+  riskTag: string;
   createdAt: string;
 }

@@ -3,7 +3,7 @@ export interface MenuNode {
   name: string;
   path: string;
   icon?: string;
-  type: 'MENU' | 'BUTTON' | 'DIRECTORY';
+  type: string;
   enabled: boolean;
   children?: MenuNode[];
 }

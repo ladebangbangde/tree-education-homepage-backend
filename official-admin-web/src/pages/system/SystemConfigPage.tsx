@@ -10,16 +10,29 @@ export default function SystemConfigPage() {
   const [data, setData] = useState<ConfigItem[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchSystemConfigs = async () => {
     setLoading(true);
-    getSystemConfigsApi().then((res) => setData(res.list || [])).catch((e) => setError(e.message)).finally(() => setLoading(false));
+    setError('');
+    try {
+      const res = await getSystemConfigsApi();
+      setData(res.list || []);
+    } catch (e: any) {
+      setError(e?.message || '加载失败');
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSystemConfigs();
   }, []);
 
   return (
     <>
       <PageHeader title="系统配置" subtitle="配置项管理与系统级策略查看" />
       <Card>
-        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} />
+        <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchSystemConfigs} />
         {!loading && !error && !!data.length && <Table rowKey="id" dataSource={data} columns={[
           { title: '配置 Key', dataIndex: 'key' },
           { title: '配置 Value', dataIndex: 'value' },

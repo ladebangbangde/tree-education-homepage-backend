@@ -1,4 +1,8 @@
-import request from '@/utils/request';
+import { adaptMenuTree } from '@/adapters/admin';
 import { MenuNode } from '@/types/menu';
+import request from '@/utils/request';
 
-export const getMenuTreeApi = () => request.get<never, MenuNode[]>('/admin/menus/tree');
+export const getMenuTreeApi = async (): Promise<MenuNode[]> => {
+  const data = await request.get<never, unknown>('/admin/menus/tree');
+  return adaptMenuTree(data);
+};

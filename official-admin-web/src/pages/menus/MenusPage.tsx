@@ -32,7 +32,7 @@ export default function MenusPage() {
   return (
     <>
       <PageHeader title="菜单管理" subtitle="菜单树与路由映射查看" />
-      <Card>
+      <Card className="admin-content-card">
         <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchMenus} />
         {!loading && !error && !!data.length && (
           <Table rowKey="id" dataSource={data} pagination={false} columns={[

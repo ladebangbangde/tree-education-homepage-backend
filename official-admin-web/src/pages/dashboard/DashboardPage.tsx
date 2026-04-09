@@ -12,7 +12,7 @@ export default function DashboardPage() {
       <PageHeader title="工作台" subtitle="欢迎回到留学教育机构官网后台管理系统" />
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Card>
+          <Card className="admin-content-card">
             <Typography.Title level={5}>欢迎卡片</Typography.Title>
             <Space wrap>
               <Tag color="blue">当前用户：{user?.displayName ?? '管理员'}</Tag>
@@ -27,18 +27,18 @@ export default function DashboardPage() {
           ['待处理工单', 8]
         ].map(([title, value]) => (
           <Col xs={24} md={12} xl={6} key={title}>
-            <Card>
+            <Card className="admin-content-card">
               <Statistic title={title} value={value as number} />
             </Card>
           </Col>
         ))}
         <Col xs={24} xl={12}>
-          <Card title="快捷入口">
+          <Card title="快捷入口" className="admin-content-card">
             <Space wrap>{quickEntries.map((item) => <Tag key={item}>{item}</Tag>)}</Space>
           </Card>
         </Col>
         <Col xs={24} xl={12}>
-          <Card title="最近操作 / 系统提示">
+          <Card title="最近操作 / 系统提示" className="admin-content-card">
             <List
               dataSource={['系统配置更新已生效', '新增菜单权限待审核', '昨日登录成功率 99.8%']}
               renderItem={(item) => <List.Item>{item}</List.Item>}

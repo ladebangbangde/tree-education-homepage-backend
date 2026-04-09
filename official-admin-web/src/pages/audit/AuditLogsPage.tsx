@@ -32,7 +32,7 @@ export default function AuditLogsPage() {
   return (
     <>
       <PageHeader title="审计日志" subtitle="后台操作记录与调用轨迹" />
-      <Card>
+      <Card className="admin-content-card">
         <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchAuditLogs} />
         {!loading && !error && !!data.length && <Table rowKey="id" dataSource={data} columns={[
           { title: 'operator', dataIndex: 'operator' },

@@ -7,5 +7,5 @@ interface StatusTagProps {
 
 export default function StatusTag({ status }: StatusTagProps) {
   const meta = getStatusMeta(status);
-  return <Tag color={meta.color}>{meta.text}</Tag>;
+  return <Tag className="admin-status-tag" color={meta.color}>{meta.text}</Tag>;
 }

@@ -31,7 +31,7 @@ export default function PermissionsPage() {
   return (
     <>
       <PageHeader title="权限点查看" subtitle="权限 code 与 module/resource/action 结构" />
-      <Card>
+      <Card className="admin-content-card">
         <PageState loading={loading} error={error} empty={!loading && !error && !data.length} onRetry={fetchPermissions} />
         {!loading && !error && !!data.length && <Table rowKey="code" dataSource={data} columns={[
           { title: '权限 Code', dataIndex: 'code' },

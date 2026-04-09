@@ -9,7 +9,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, subtitle, extra }: PageHeaderProps) {
   return (
-    <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div className="admin-page-header">
       <Space direction="vertical" size={2}>
         <Typography.Title level={4} style={{ margin: 0 }}>
           {title}
@@ -20,7 +20,7 @@ export default function PageHeader({ title, subtitle, extra }: PageHeaderProps) 
           </Typography.Text>
         ) : null}
       </Space>
-      {extra}
+      {extra ? <div className="admin-page-actions">{extra}</div> : null}
     </div>
   );
 }

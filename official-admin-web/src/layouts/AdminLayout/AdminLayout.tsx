@@ -12,7 +12,7 @@ import {
   UserOutlined
 } from '@ant-design/icons';
 import { Alert, Avatar, Button, Dropdown, Input, Layout, Menu, Result, Space, Spin, Typography, message } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getMeApi } from '@/api/auth';
 import { getMenuTreeApi } from '@/api/menu';
@@ -23,7 +23,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { MenuNode } from '@/types/menu';
 
 const { Header, Sider, Content } = Layout;
-const iconMap: Record<string, JSX.Element> = {
+const iconMap: Record<string, ReactNode> = {
   dashboard: <AppstoreOutlined />,
   users: <TeamOutlined />,
   roles: <SafetyOutlined />,
